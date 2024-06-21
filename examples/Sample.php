@@ -31,7 +31,7 @@ $caddress->setBuildingNumber(5);
 $caddress->setCityName('Castle Land');
 $caddress->setPostalZone('38760');
 $country = new Country();
-$country->setIdentificationCode('FR');
+$country->setIdentificationCode('MY');
 $caddress->setCountry($country);
 
 // company

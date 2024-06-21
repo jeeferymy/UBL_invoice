@@ -13,7 +13,7 @@ use Sabre\Xml\Writer;
 use Sabre\Xml\XmlSerializable;
 
 class Invoice implements XmlSerializable{
-    private $UBLVersionID = '2.1';
+    private $UBLVersionID = '1.0';
 
     /**
      * @var int
@@ -32,6 +32,7 @@ class Invoice implements XmlSerializable{
      * @var string
      */
 
+    private $listVersionID = "1.0";
     private $invoiceTypeCode;
 
     /**
@@ -105,12 +106,14 @@ class Invoice implements XmlSerializable{
         $this->validate();
 
         $writer->write([
-            Schema::CBC . 'UBLVersionID' => $this->UBLVersionID,
-            Schema::CBC . 'CustomizationID' => 'OIOUBL-2.01',
+            //Schema::CBC . 'UBLVersionID' => $this->UBLVersionID,
+            //Schema::CBC . 'CustomizationID' => 'OIOUBL-2.01',
             Schema::CBC . 'ID' => $this->id,
-            Schema::CBC . 'CopyIndicator' => $this->copyIndicator ? 'true' : 'false',
+            //Schema::CBC . 'CopyIndicator' => $this->copyIndicator ? 'true' : 'false',
             Schema::CBC . 'IssueDate' => $this->issueDate->format('Y-m-d'),
-            Schema::CBC . 'InvoiceTypeCode' => $this->invoiceTypeCode,
+            Schema::CBC . 'IssueTime' => $this->issueDate->format('H:i:s'),
+            ['name' => Schema::CBC . 'InvoiceTypeCode','value' => "01",'attributes' => ['listVersionID' => $this->listVersionID ]],
+            Schema::CBC . 'DocumentCurrencyCode' => "MYR",
             Schema::CAC . 'AccountingSupplierParty' => [Schema::CAC . "Party" => $this->accountingSupplierParty],
             Schema::CAC . 'AccountingCustomerParty' => [Schema::CAC . "Party" => $this->accountingCustomerParty],
         ]);
